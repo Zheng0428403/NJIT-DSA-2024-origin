@@ -11,85 +11,97 @@ package oy.tol.tra;
  * - StackImplementation(int size), which allocates an array of Object's with size.
  *  -- remember to maintain the capacity and/or currentIndex when the stack is manipulated.
  */
+import java.util.*;
+
 public class StackImplementation<E> implements StackInterface<E> {
 
-   private Object [] itemArray;
-   private int capacity;
-   private int currentIndex = -1;
-   private static final int DEFAULT_STACK_SIZE = 10;
+    private static final int DEFAULT_STACK_SIZE = 0;
+   private Object[] itemArray;
+    private int capacity;
+    private int currentIndex = -1;
+    private int size;
 
-   /**
-    * Allocates a stack with a default capacity.
-    * @throws StackAllocationException
-    */
-   public StackImplementation() throws StackAllocationException {
-      // TODO: call the constructor with size parameter with default size of 10.
-      
-   }
+    public StackImplementation() throws StackAllocationException {
+        this(DEFAULT_STACK_SIZE);
+    }
 
-   /** TODO: Implement so that
-    * - if the size is less than 2, throw StackAllocationException
-    * - if the allocation of the array throws with Java exception,
-    *   throw StackAllocationException.
-    * @param capacity The capacity of the stack.
-    * @throws StackAllocationException If cannot allocate room for the internal array.
-    */
-   public StackImplementation(int capacity) throws StackAllocationException {
-      
-   }
+    public StackImplementation(int capacity) throws StackAllocationException {
+        if (capacity < 2) {
+            throw new StackAllocationException("Stack capacity must be at least 2.");
+        }
+        this.capacity = capacity;
+        this.itemArray = new Object[capacity];
+        this.size = 0;
+    }
 
-   @Override
-   public int capacity() {
-      // TODO: Implement this
-      
-   }
+    @Override
+    public int capacity() {
+        return capacity;
+    }
 
-   @Override
-   public void push(E element) throws StackAllocationException, NullPointerException {
-      // TODO: Implement this
-               
-   }
+    @Override
+    public void push(E element) throws StackAllocationException, NullPointerException {
+        if (element == null) {
+            throw new NullPointerException("Cannot push null element into the stack");
+        }
+        if (size == capacity) {
+            resize();
+        }
+        itemArray[++currentIndex] = element;
+        size++;
+    }
 
-   @SuppressWarnings("unchecked")
-   @Override
-   public E pop() throws StackIsEmptyException {
-      
-   }
+    private void resize() {
+        int newCapacity = capacity * 2;
+        itemArray = Arrays.copyOf(itemArray, newCapacity);
+        capacity = newCapacity;
+    }
 
-   @SuppressWarnings("unchecked")
-   @Override
-   public E peek() throws StackIsEmptyException {
-      
-   }
+    @SuppressWarnings("unchecked")
+    @Override
+    public E pop() throws StackIsEmptyException {
+        if (isEmpty()) {
+            throw new StackIsEmptyException("Stack is empty");
+        }
+        E item = (E) itemArray[currentIndex];
+        itemArray[currentIndex] = null;
+        currentIndex--;
+        size--;
+        return item;
+    }
 
-   @Override
-   public int size() {
-      // TODO: Implement this
-      
-   }
+    @SuppressWarnings("unchecked")
+    @Override
+    public E peek() throws StackIsEmptyException {
+        if (isEmpty()) {
+            throw new StackIsEmptyException("Stack is empty");
+        }
+        return (E) itemArray[currentIndex];
+    }
 
-   @Override
-   public void clear() {
-      // TODO: Implement this
-      
-   }
+    @Override
+    public int size() {
+        return size;
+    }
 
-   @Override
-   public boolean isEmpty() {
-      // TODO: Implement this
-      
-   }
+    @Override
+    public void clear() {
+        Arrays.fill(itemArray, null);
+        currentIndex = -1;
+        size = 0;
+    }
 
-   @Override
-   public String toString() {
-      StringBuilder builder = new StringBuilder("[");
-      for (var index = 0; index <= currentIndex; index++) {
-         builder.append(itemArray[index].toString());
-         if (index < currentIndex) {
-            builder.append(", ");
-         }
-      }
-      builder.append("]");
-      return builder.toString();
-   }
+    @Override
+    public boolean isEmpty() {
+        return currentIndex == -1;
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(", ", "[", "]");
+        for (int index = 0; index <= currentIndex; index++) {
+            joiner.add(itemArray[index].toString());
+        }
+        return joiner.toString();
+    }
 }

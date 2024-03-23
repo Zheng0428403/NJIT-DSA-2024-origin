@@ -10,4 +10,8 @@ public class QueueIsEmptyException extends RuntimeException {
   public QueueIsEmptyException(String message) {
       super(message);
    }
+
+public QueueIsEmptyException() {
+    //TODO Auto-generated constructor stub
+}
 }

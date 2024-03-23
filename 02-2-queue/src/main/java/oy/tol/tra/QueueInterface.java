@@ -53,4 +53,6 @@ public interface QueueInterface<E> {
     */
    public void clear();
 
+public String remove();
+
 }

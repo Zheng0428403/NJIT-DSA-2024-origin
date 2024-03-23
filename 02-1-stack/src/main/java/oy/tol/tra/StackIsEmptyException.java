@@ -12,4 +12,9 @@ public class StackIsEmptyException extends RuntimeException {
    public StackIsEmptyException(String message) {
       super(message);
    }
+
+    public static Object peek() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'peek'");
+    }
 }

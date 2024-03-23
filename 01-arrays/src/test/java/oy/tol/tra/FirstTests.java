@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Timeout;
 public class FirstTests {
    
    @Test
+   @Timeout(value = 10, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
    @DisplayName("Testing the IntArray.reverse()") 
    void reverseTest() {
       Integer [] testArray = getArrayWithThreeNumbers();

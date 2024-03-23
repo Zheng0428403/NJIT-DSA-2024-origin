@@ -133,4 +133,39 @@ class TreeNode<K extends Comparable<K>, V> {
       }
       return true;
    }
+
+public K getKey() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getKey'");
+}
+
+public Object getLeft() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getLeft'");
+}
+
+public void setLeft(TreeNode treeNode) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setLeft'");
+}
+
+public Object getRight() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getRight'");
+}
+
+public void setRight(TreeNode treeNode) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setRight'");
+}
+
+public void setValue(V value) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setValue'");
+}
+
+public V getValue() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getValue'");
+}
 }
