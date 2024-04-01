@@ -9,7 +9,8 @@ public class QueueImplementation<E> implements QueueInterface<E> {
     private int size;
     private int head;
     private int tail;
-    
+    private static int DEFAULT_QUEUE_SIZE = 10;
+
     public QueueImplementation(int initialCapacity) {
         this.capacity = initialCapacity;
         this.queueArray = new Object[initialCapacity];
@@ -17,7 +18,11 @@ public class QueueImplementation<E> implements QueueInterface<E> {
         this.head = 0;
         this.tail = 0;
     }
+    public QueueImplementation() throws QueueAllocationException {
+        this(DEFAULT_QUEUE_SIZE);
+    }
 
+    @Override
     public int capacity() {
         return capacity;
     }
@@ -53,20 +58,21 @@ public class QueueImplementation<E> implements QueueInterface<E> {
             throw new QueueIsEmptyException("Queue is empty");
         }
         @SuppressWarnings("unchecked")
-      E element = (E) queueArray[head];
+        E element = (E) queueArray[head];
         queueArray[head] = null;
         head = (head + 1) % capacity;
         size--;
         return element;
     }
 
-    @SuppressWarnings("unchecked")
-   @Override
+    @Override
     public E element() throws QueueIsEmptyException {
         if (isEmpty()) {
             throw new QueueIsEmptyException("Queue is empty");
         }
-        return (E) queueArray[head];
+        @SuppressWarnings("unchecked")
+        E element = (E) queueArray[head];
+        return element;
     }
 
     @Override
@@ -88,11 +94,26 @@ public class QueueImplementation<E> implements QueueInterface<E> {
     }
 
     @Override
-    public String remove(){
-        if(isEmpty()){
-            return "Queue is already empty";
-        }else{
-            return "Queue is not empty";
+    public String remove() {
+        throw new UnsupportedOperationException("Unimplemented method 'remove'");
+    }
+
+    @Override
+    public String toString() {
+        if (isEmpty()) {
+            return "[]";
         }
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        for (int i = 0; i < size; i++) {
+            @SuppressWarnings("unchecked")
+            E element = (E) queueArray[(head + i) % capacity];
+            builder.append(element);
+            if (i < size - 1) {
+                builder.append(", ");
+            }
+        }
+        builder.append("]");
+        return builder.toString();
     }
 }
