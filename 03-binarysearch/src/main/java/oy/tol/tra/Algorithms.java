@@ -1,84 +1,90 @@
 package oy.tol.tra;
 
-import java.util.function.Supplier;
+public class Algorithms {
 
-public class Algorithms
-{
-public static void main(String[] args)
-{
-    int[] arr = {1,5,3,4,7,8,9,6,2,0};
-    System.out.print("The array before sorting is：");
-    for(int i = 0; i < arr.length; i++){
-        System.out.print(arr[i] + " ");
+    public static void main(String[] args) {
+        // Example to demonstrate sorting and searching
+        Integer[] arr = {1, 5, 3, 4, 7, 8, 9, 6, 2, 0};
+        System.out.print("The array before sorting is: ");
+        for (Integer i : arr) {
+            System.out.print(i + " ");
+        }
+        // Sorting
+        fastSort(arr);
+        System.out.println();
+        System.out.print("The array after sorting is: ");
+        for (Integer i : arr) {
+            System.out.print(i + " ");
+        }
+        // Binary search
+        int index = binarySearch(5, arr, 0, arr.length - 1);
+        System.out.println("\nIndex of 5 after sorting is: " + index);
     }
-    for(int i = 0; i < arr.length-1; i++) 
-    {
-        for(int j = 0; j < arr.length - 1 - i; j++) 
-        {
-            if(arr[j] > arr[j+1]){
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
+
+    public static <E extends Comparable<E>> void fastSort(E[] array) {
+        quickSort(array, 0, array.length - 1);
+    }
+
+    private static <E extends Comparable<E>> void quickSort(E[] array, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(array, begin, end);
+            quickSort(array, begin, partitionIndex - 1);
+            quickSort(array, partitionIndex + 1, end);
+        }
+    }
+
+    private static <E extends Comparable<E>> int partition(E[] array, int begin, int end) {
+        E pivot = array[end];
+        int i = begin - 1;
+        for (int j = begin; j < end; j++) {
+            if (array[j].compareTo(pivot) <= 0) {
+                i++;
+                swap(array, i, j);
+            }
+        }
+        swap(array, i + 1, end);
+        return i + 1;
+    }
+
+    public static <T extends Comparable<T>> int binarySearch(T value, T[] array, int fromIndex, int toIndex) {
+        while (fromIndex <= toIndex) {
+            int mid = fromIndex + (toIndex - fromIndex) / 2;
+            int compareResult = value.compareTo(array[mid]);
+            if (compareResult == 0) {
+                return mid;
+            } else if (compareResult < 0) {
+                toIndex = mid - 1;
+            } else {
+                fromIndex = mid + 1;
+            }
+        }
+        return -1; // Element not found
+    }
+
+    public static <T extends Comparable<T>> void sort(T[] array) {
+        for (int i = 0; i < array.length - 1; i++) {
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[i].compareTo(array[j]) > 0) {
+                    swap(array, i, j);
+                }
             }
         }
     }
-    System.out.println();
-    System.out.print("The array after sorting is：");
-    for(int i = 0; i < arr.length; i++){
-        System.out.print(arr[i] + " ");
-    }
-}
-public static <T extends Comparable<T>> int binarySearch(T aValue, T[] fromArray, int fromIndex, int toIndex) {
-    while (fromIndex <= toIndex) {
-        int mid = fromIndex + (toIndex - fromIndex) / 2;
 
-        int cmp = fromArray[mid].compareTo(aValue);
-        
-        if (cmp == 0) {
-            return mid; 
-        } else if (cmp < 0) {
-            fromIndex = mid + 1;
-        } else {
-            toIndex = mid - 1; 
+    public static <T> void reverse(T[] array) {
+        int i = 0;
+        int j = array.length - 1;
+        while (i < j) {
+            swap(array, i, j);
+            i++;
+            j--;
         }
     }
-    
-    return -1;
-}
 
-void searchFromMiddle() {
-    Integer[] array = {1, 2, 3, 4, 5};
-    int index = Algorithms.binarySearch(3, array, 0, array.length - 1);
-    assertEquals(2, index, () -> "Number three must be in the index 2 (middle of the array) in this case.");
-
-    Integer[] array2 = {1, 2, 3, 4, 5, 6};
-    index = Algorithms.binarySearch(3, array2, 0, array2.length - 1);
-    assertEquals(2, index, () -> "Number three must be in the index 2 (left from middle of the array) in this case.");
-
-    index = Algorithms.binarySearch(4, array2, 0, array2.length - 1);
-    assertEquals(3, index, () -> "Number four must be in the index 3 (middle of the array) in this case.");
-}
-private void assertEquals(int expected, int index, Supplier<String> messageSupplier) {
-    
-    throw new UnsupportedOperationException("Unimplemented method 'assertEquals'");
-}
-public static int slowLinearSearch(String aValue, String [] fromArray, int fromIndex, int toIndex) {
-    for (int index = fromIndex; index < toIndex; index++) {
-       if (fromArray[index].equals(aValue)) {
-          return index;
-       }
+    private static <T> void swap(T[] array, int i, int j) {
+        T temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
     }
-    return -1;
- }
-public static void sort(String[] array) {
-    
-    throw new UnsupportedOperationException("Unimplemented method 'sort'");
 }
-public static void sort(Integer[] array) {
-    
-    throw new UnsupportedOperationException("Unimplemented method 'sort'");
-}
- 
-}
-
    
