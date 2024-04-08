@@ -144,7 +144,7 @@ public Object getLeft() {
     throw new UnsupportedOperationException("Unimplemented method 'getLeft'");
 }
 
-public void setLeft(TreeNode treeNode) {
+public void setLeft(@SuppressWarnings("rawtypes") TreeNode treeNode) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'setLeft'");
 }
@@ -154,7 +154,7 @@ public Object getRight() {
     throw new UnsupportedOperationException("Unimplemented method 'getRight'");
 }
 
-public void setRight(TreeNode treeNode) {
+public void setRight(@SuppressWarnings("rawtypes") TreeNode treeNode) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'setRight'");
 }

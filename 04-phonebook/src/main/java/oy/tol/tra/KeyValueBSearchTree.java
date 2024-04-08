@@ -1,10 +1,15 @@
 package oy.tol.tra;
 
+
 public class KeyValueBSearchTree<K extends Comparable<K>, V> implements Dictionary<K, V> {
 
     private TreeNode<K, V> root;
     private int count = 0;
     private int maxTreeDepth = 0;
+
+    public int readFromFileToBST() {
+        return count;
+    }
 
     @Override
     public Type getType() {
@@ -15,6 +20,8 @@ public class KeyValueBSearchTree<K extends Comparable<K>, V> implements Dictiona
     public int size() {
         return count; 
     }
+
+
 
     @Override
     public String getStatus() {
@@ -125,4 +132,4 @@ public class KeyValueBSearchTree<K extends Comparable<K>, V> implements Dictiona
     }
 
     // 其他方法保持不变
-}
+} 
