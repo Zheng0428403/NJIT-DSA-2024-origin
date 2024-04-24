@@ -98,13 +98,13 @@ public class PhoneBookTests {
     @Test
     @Order(2)
     //@Timeout(value = 20, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
-    @DisplayName("Reading test data to BST")
+    @DisplayName("Reading test data to BST")                readPersonsFromFile(fastBSTPhoneBook);
+
     void readFromFileToBST() {
         try {
             if (fastBSTPhoneBook.getType() == Dictionary.Type.BST) {
                 System.out.println("Reading test data from file to BST, please wait...");
                 long start = System.nanoTime();
-                readPersonsFromFile(fastBSTPhoneBook);
                 readingToBSTPhoneBook = System.nanoTime() - start;
                 assertEquals(ENTRY_COUNT, fastBSTPhoneBook.size(), "All persons were not added to the BST phonebook");
 
