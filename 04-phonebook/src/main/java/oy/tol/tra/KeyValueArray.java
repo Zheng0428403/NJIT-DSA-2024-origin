@@ -85,10 +85,24 @@ public class KeyValueArray<K extends Comparable<K>, V> implements Dictionary<K,V
             sorted[newIndex++] = new Pair<>(pairs[index].getKey(), pairs[index].getValue());
          }
       }
+<<<<<<< HEAD
       return sorted;
    }
 
    
+=======
+      Algorithms.fastSort(sorted);
+      return sorted;
+   }
+
+   @Override
+   public void compress() throws OutOfMemoryError {
+      // First partition the null's to the end of the array.
+      int indexOfFirstNull = Algorithms.partitionByRule(pairs, count, element -> element == null);
+      // Then reallocate using the index from partitioning, pointing the first null in the array.
+      reallocate(indexOfFirstNull);
+   }
+>>>>>>> cb86f08e0993eae3d35bae352bb1dda7fa9959b6
 
    @java.lang.SuppressWarnings("unchecked")
    private void reallocate(int newSize) throws OutOfMemoryError {
@@ -100,6 +114,7 @@ public class KeyValueArray<K extends Comparable<K>, V> implements Dictionary<K,V
       pairs = newPairs;
    }
 
+<<<<<<< HEAD
    @Override
    public void compress() throws OutOfMemoryError {
 
@@ -107,3 +122,6 @@ public class KeyValueArray<K extends Comparable<K>, V> implements Dictionary<K,V
    }
 
 }
+=======
+}
+>>>>>>> cb86f08e0993eae3d35bae352bb1dda7fa9959b6
