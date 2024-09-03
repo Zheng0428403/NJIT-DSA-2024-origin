@@ -59,4 +59,9 @@ public class Pair<K extends Comparable<K>, V> implements Comparable<Pair<K, V>> 
       return true;
    }
 
+public Object getLeft() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getLeft'");
+}
+
 }

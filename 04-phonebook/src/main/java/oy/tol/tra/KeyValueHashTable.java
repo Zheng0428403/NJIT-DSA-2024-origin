@@ -1,5 +1,7 @@
 package oy.tol.tra;
 
+import java.util.Objects;
+
 public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary<K, V> {
 
     // This should implement a hash table.
@@ -22,7 +24,7 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
 
     @Override
     public Type getType() {
-        return Type.NONE;
+        return Type.HASHTABLE;
     }
 
     @SuppressWarnings("unchecked")
@@ -42,7 +44,7 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
     @Override
     public int size() {
         // TODO: Implement this.
-        return 0;
+        return count;
     }
 
     /**
@@ -70,44 +72,90 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
 
     @Override
     public boolean add(K key, V value) throws IllegalArgumentException, OutOfMemoryError {
+       Objects.requireNonNull(key, "Key cannot be null.");
+        Objects.requireNonNull(value, "Value cannot be null.");
         // TODO: Implement this.
         // Remeber to check for null values.
-
+        if(find(key)!=null){
+            return false;
+        }
         // Checks if the LOAD_FACTOR has been exceeded --> if so, reallocates to a bigger hashtable.
         if (((double)count * (1.0 + LOAD_FACTOR)) >= values.length) {
             reallocate((int)((double)(values.length) * (1.0 / LOAD_FACTOR)));
         }
+        int index = findAvailableIndex(key);
+        if (values[index] == null) {
+            values[index] = new Pair<>(key, value);
+            count++;
+            return true; // 新项被插入
+        } else {
+            values[index].setValue(value);
+            return false; }
         // Remember to get the hash key from the Person,
         // hash table computes the index for the Person (based on the hash value),
         // if index was taken by different Person (collision), get new hash and index,
         // insert into table when the index has a null in it,
         // return true if existing Person updated or new Person inserted.
         
-        return false;
     }
+
+    private int findAvailableIndex(K key) {
+        int index = calculateIndex(key);
+        int probingStep = 1;
+        while (values[index] != null && !values[index].getKey().equals(key)) {
+            index = (index + probingStep) % values.length;
+            probingStep++;
+            collisionCount++;
+            if (probingStep > maxProbingSteps) {
+                maxProbingSteps = probingStep;
+            }
+        }
+        return index;
+    }
+
 
     @Override
     public V find(K key) throws IllegalArgumentException {
+        Objects.requireNonNull(key, "Key cannot be null.");
+        int index = findIndex(key);
+        return (index != -1) ? values[index].getValue() : null;
         // Remember to check for null.
 
         // Must use same method for computing index as add method
         
-        return null;
     }
+
+    private int findIndex(K key) {
+        int index = calculateIndex(key);
+        int probingStep = 1;
+        while (values[index] != null && !values[index].getKey().equals(key)) {
+            index = (index + probingStep) % values.length;
+            probingStep++;
+            if (probingStep > maxProbingSteps) {
+                break;
+            }
+        }
+        return (values[index] != null && values[index].getKey().equals(key)) ? index : -1;
+    }
+
+    private int calculateIndex(K key) {
+        return Math.abs(key.hashCode()) % values.length;
+    }
+
 
     @Override
     @java.lang.SuppressWarnings({"unchecked"})
     public Pair<K,V> [] toSortedArray() {
-        Pair<K, V> [] sorted = (Pair<K,V>[])new Pair[count];
+        Pair<K, V>[] sorted = (Pair<K,V>[])new Pair[count];
         int newIndex = 0;
         for (int index = 0; index < values.length; index++) {
            if (values[index] != null) {
               sorted[newIndex++] = new Pair<>(values[index].getKey(), values[index].getValue());
            }
         }
-        Algorithms.fastSort(sorted);
         return sorted;
       }
+    
 
     @SuppressWarnings("unchecked")
     private void reallocate(int newSize) throws OutOfMemoryError {

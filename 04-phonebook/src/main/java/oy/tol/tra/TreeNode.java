@@ -133,4 +133,30 @@ class TreeNode<K extends Comparable<K>, V> {
       }
       return true;
    }
+
+   public K getKey() {
+      return keyValue.getKey();
+   }
+   public TreeNode<K, V> getLeft() {
+      return left;
+   }
+
+   public void setLeft(TreeNode<K, V> left) {
+      this.left = left;
+   }
+
+   public TreeNode<K, V> getRight() {
+      return right;
+   }
+
+   public void setRight(TreeNode<K, V> right) {
+      this.right = right;
+   }
+   public void setValue(V value) {
+      keyValue = new Pair<>(keyValue.getKey(), value);
+   }
+
+   public V getValue() {
+      return keyValue.getValue();
+   }
 }
