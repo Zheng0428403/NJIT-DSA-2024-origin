@@ -40,6 +40,9 @@ public class KeyValueBSearchTree<K extends Comparable<K>, V> implements Dictiona
         if (key == null) {
             throw new IllegalArgumentException("Key cannot be null");
         }
+        if (value == null) {
+            throw new IllegalArgumentException("value cannot be null");
+        }
 
         if (root == null) {
             root = new TreeNode<>(key, value);
@@ -167,7 +170,7 @@ public class KeyValueBSearchTree<K extends Comparable<K>, V> implements Dictiona
             return;
         }
         inOrderToArray((TreeNode<K, V>) node.getLeft(), array, index);
-        array[index[0]++] = new Pair<>(node.getKey(), node.getValue()); 
+        array[index[0]++] = new Pair<>(node.getKey(), node.getValue());
         inOrderToArray((TreeNode<K, V>) node.getRight(), array, index);
     }
 

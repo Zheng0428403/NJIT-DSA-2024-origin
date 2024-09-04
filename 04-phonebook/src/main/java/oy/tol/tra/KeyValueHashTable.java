@@ -72,13 +72,19 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
 
     @Override
     public boolean add(K key, V value) throws IllegalArgumentException, OutOfMemoryError {
+        if(key==null || value==null){
+            throw new IllegalArgumentException("key or value cannot be null");
+        }
        Objects.requireNonNull(key, "Key cannot be null.");
         Objects.requireNonNull(value, "Value cannot be null.");
         // TODO: Implement this.
         // Remeber to check for null values.
         if(find(key)!=null){
+            int index = findIndex(key);
+            values[index].setValue(value);
             return false;
         }
+
         // Checks if the LOAD_FACTOR has been exceeded --> if so, reallocates to a bigger hashtable.
         if (((double)count * (1.0 + LOAD_FACTOR)) >= values.length) {
             reallocate((int)((double)(values.length) * (1.0 / LOAD_FACTOR)));
@@ -101,18 +107,20 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
 
     private int findAvailableIndex(K key) {
         int index = calculateIndex(key);
-        int probingStep = 1;
-        while (values[index] != null && !values[index].getKey().equals(key)) {
-            index = (index + probingStep) % values.length;
+        int probingStep = 0;
+        while (values[index] != null) {
+            if (values[index].getKey().equals(key)) {
+                return index;
+            }
+            index = (index + 1) % values.length;
             probingStep++;
-            collisionCount++;
             if (probingStep > maxProbingSteps) {
                 maxProbingSteps = probingStep;
             }
+            collisionCount++;
         }
         return index;
     }
-
 
     @Override
     public V find(K key) throws IllegalArgumentException {
@@ -146,14 +154,20 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
     @Override
     @java.lang.SuppressWarnings({"unchecked"})
     public Pair<K,V> [] toSortedArray() {
-        Pair<K, V>[] sorted = (Pair<K,V>[])new Pair[count];
+        Pair<K, V>[] sorted = (Pair<K, V>[]) new Pair[count];
         int newIndex = 0;
+
+        // 将哈希表中的键值对复制到新数组中
         for (int index = 0; index < values.length; index++) {
-           if (values[index] != null) {
-              sorted[newIndex++] = new Pair<>(values[index].getKey(), values[index].getValue());
-           }
+            if (values[index] != null) {
+                sorted[newIndex++] = new Pair<>(values[index].getKey(), values[index].getValue());
+            }
         }
+
+        Algorithms.fastSort(sorted);
+
         return sorted;
+
       }
     
 

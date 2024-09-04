@@ -40,20 +40,22 @@ public class Person implements Comparable<Person> {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + System.identityHashCode(this);
+        for (int i = 0; i < firstName.length(); i++) {
+            result = 31 * result + firstName.charAt(i);
+        }
+        for (int i = 0; i < lastName.length(); i++) {
+            result = 31 * result + lastName.charAt(i);
+        }
         return result;
     }
 
-
-
     @Override
     public boolean equals(Object other) {
-        if (other instanceof Person) {
-            return this.getFullName().equals(((Person)other).getFullName());
-        }
-        return false;
+
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        Person person = (Person) other;
+        return firstName.equals(person.firstName) && lastName.equals(person.lastName);
     }
 
     /**
@@ -71,6 +73,10 @@ public class Person implements Comparable<Person> {
      */
     @Override
     public int compareTo(Person other) {
-        return getFullName().compareTo(other.getFullName());
+        int lastNameComparison = this.lastName.compareTo(other.lastName);
+        if (lastNameComparison != 0) {
+            return lastNameComparison;
+        }
+        return this.firstName.compareTo(other.firstName);
     }
 }
